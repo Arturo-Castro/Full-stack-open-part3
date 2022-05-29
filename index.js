@@ -53,10 +53,18 @@ app.delete("/api/persons/:id", (request, response) => {
 app.use(express.json())
 app.post("/api/persons", (request, response) => {
   const body = request.body
-  if (!body) {
+  if (!body.name) {
     return response.status(404).json({
-      error: "content missing"
+      error: "Name is missing"
     })
+  } else if (!body.number) {
+      return response.status(404).json({
+        error: "Number is missing"
+      })
+  } else if (persons.some(person => person.name === body.name)) {
+      return response.status(404).json({
+        error: "The name already exists in the phonebook"
+      })
   }
 
   const person = {
