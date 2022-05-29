@@ -50,6 +50,25 @@ app.delete("/api/persons/:id", (request, response) => {
   response.status(204).end()
 })
 
+app.use(express.json())
+app.post("/api/persons", (request, response) => {
+  const body = request.body
+  if (!body) {
+    return response.status(404).json({
+      error: "content missing"
+    })
+  }
+
+  const person = {
+    id: Math.floor(Math.random()*100),
+    name: body.name,
+    number: body.number
+  }
+
+  persons = persons.concat(person)
+  response.json(person)
+})
+
 const PORT = 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
